@@ -1,5 +1,18 @@
 /* 받는 나라 고르기(영어·한국어 페이지) + 문의 양식 보내기. 받는 메일 주소는 서버 설정에만 있고 여기에는 없다. */
 (function () {
+  // 화면에 들어올 때 톡 튀어나오는 모션. 지원하지 않는 브라우저에서는 처음부터 보인다
+  var pops = document.querySelectorAll(".pop");
+  if ("IntersectionObserver" in window) {
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); seen.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    pops.forEach(function (el) { seen.observe(el); });
+  } else {
+    pops.forEach(function (el) { el.classList.add("in"); });
+  }
+
   // 받는 나라를 고르면 그 나라의 세금 안내와 접점 단추만 보인다
   var radios = document.querySelectorAll('input[name="pick"]');
   function show(cc) {
