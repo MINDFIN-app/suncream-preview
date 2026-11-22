@@ -21,10 +21,23 @@
     b.addEventListener("click", function (e) { e.preventDefault(); });
   });
 
+  var endpoint = document.body.dataset.endpoint || "";
+
+  // 문의 단추를 누른 횟수만 센다(어느 단추·어느 언어 페이지인지). 누가 눌렀는지는 보내지 않는다.
+  document.querySelectorAll("[data-click]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      if (!endpoint || !navigator.sendBeacon) return;
+      try {
+        navigator.sendBeacon(endpoint, JSON.stringify({
+          event: "click", button: b.dataset.click, lang: document.body.dataset.lang
+        }));
+      } catch (e) {}
+    });
+  });
+
   var form = document.querySelector("form.ask");
   if (!form) return;
   var status = form.querySelector(".status");
-  var endpoint = document.body.dataset.endpoint || "";
   function say(key, bad) {
     status.textContent = status.dataset[key];
     status.classList.toggle("bad", !!bad);
