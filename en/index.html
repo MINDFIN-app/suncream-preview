@@ -17,7 +17,7 @@
 
 <header class="top">
   <a class="brand" href="#top"><img src="../assets/logo.png" alt="Haeyo" width="680" height="300"></a>
-  <nav class="langs" aria-label="Language"><a href="../ko/index.html" lang="ko">한국어</a><a href="../en/index.html" lang="en" aria-current="page">English</a><a href="../th/index.html" lang="th">ไทย</a></nav>
+  <nav class="langs" aria-label="Language"><a href="../ko/index.html" lang="ko">한국어</a><a href="../en/index.html" lang="en" aria-current="page">English</a><a href="../th/index.html" lang="th">ไทย</a><a href="../vi/index.html" lang="vi">Tiếng Việt</a></nav>
 </header>
 <nav class="sections" aria-label="Product">
   <a href="#product">Product</a>
@@ -30,7 +30,7 @@
 <main id="top">
   <section class="hero">
     <div class="words">
-      <p class="route"><span>Korea</span><i aria-hidden="true"></i><span>Thailand</span></p>
+      <p class="route"><span>Korea</span><i aria-hidden="true"></i><span>Thailand, Vietnam</span></p>
       <h1>Daily sunscreen, sent to you directly from Korea</h1>
       <p class="who">Seller shipping directly from Korea</p>
       <p class="how">Shipped by Korea Post international mail. We tell you the import tax you will pay before you order.</p>
@@ -88,10 +88,10 @@
 
   <section class="block tint" id="shipping">
     <h2>Shipping and tax</h2>
-    
+    <fieldset class="picker"><legend>Where will you receive it?</legend><label><input type="radio" name="pick" value="th">Thailand</label><label><input type="radio" name="pick" value="vn">Vietnam</label></fieldset>
     <dl class="card pop">
       <div><dt>By Korea Post international mail</dt><dd>Each order is sent from Korea. We give you a tracking number when it ships.</dd></div>
-      <div><dt>Tax you pay on arrival</dt><dd>The country where the parcel arrives charges import tax, and the person receiving it pays. We tell you the estimated amount before you order.<ul class="tax"><li>Delivery to Thailand: about <span class="tbd">to be confirmed</span> expected</li></ul></dd></div>
+      <div><dt>Tax you pay on arrival</dt><dd>The country where the parcel arrives charges import tax, and the person receiving it pays. We tell you the estimated amount before you order.<ul class="tax"><li data-country="th">Delivery to Thailand: about <span class="tbd">to be confirmed</span> expected</li><li data-country="vn">Delivery to Vietnam: about <span class="tbd">to be confirmed</span> expected</li></ul></dd></div>
       <div><dt>Delivery time</dt><dd>We will state it here once our test shipments arrive.</dd></div>
       <div><dt>Sold as</dt><dd>A set of two.</dd></div>
       <div><dt>Returns</dt><dd>We will state the return process here once it is confirmed.</dd></div>
@@ -106,7 +106,7 @@
       <li class="pop">You pay through a payment link we send. Payment methods: <span class="tbd">to be confirmed</span></li>
       <li class="pop">We ship by post and send you the tracking number.</li>
     </ol>
-    <div class="acts"><a class="btn solid" href="#contact" aria-disabled="true">Message on Messenger <span class="tbd">to be confirmed</span></a><a class="btn" href="#contact" aria-disabled="true">Message on LINE <span class="tbd">to be confirmed</span></a><a class="btn" href="#contact" data-click="form">Use the contact form</a></div>
+    <div class="acts"><span data-country="th"><a class="btn solid" href="#contact" aria-disabled="true">Message on Messenger <span class="tbd">to be confirmed</span></a></span><span data-country="th"><a class="btn" href="#contact" aria-disabled="true">Message on LINE <span class="tbd">to be confirmed</span></a></span><span data-country="vn"><a class="btn solid" href="#contact" aria-disabled="true">Message on Messenger <span class="tbd">to be confirmed</span></a></span><a class="btn" href="#contact" data-click="form">Use the contact form</a></div>
   </section>
 
   <section class="block" id="faq">
@@ -126,7 +126,7 @@
     <form class="ask card pop" novalidate>
       <label>Name<input name="name" autocomplete="name" required></label>
       <label>Contact (email or messenger ID)<input name="contact" required></label>
-      <label>Country<select name="country" required><option value="th">Thailand</option><option value="other">Another country</option></select></label>
+      <label>Country<select name="country" required><option value="th">Thailand</option><option value="vn">Vietnam</option><option value="other">Another country</option></select></label>
       <label>Message<textarea name="message" rows="5" required></textarea></label>
       <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
       <label class="consent"><input type="checkbox" name="consent" required><span>I agree that this information is collected and used to answer my enquiry.</span></label>
