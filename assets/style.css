@@ -151,12 +151,13 @@ main>.block:last-child:not(.tint){padding-bottom:56px}
 .pcard{position:relative;background:var(--paper);border:var(--line);border-radius:var(--r);box-shadow:var(--drop);padding:14px 14px 18px;display:grid;gap:10px;align-content:start}
 .pc-photo{aspect-ratio:4/3;background:var(--blush);border:2px dashed var(--pink);border-radius:16px;display:grid;place-items:center;overflow:hidden;text-align:center;font-size:.875rem;color:#B71466;font-weight:600}
 .pc-photo img{width:100%;height:100%;object-fit:contain;background:var(--paper)}
-.pcard h3{font-family:var(--head);font-weight:800;font-size:1.375rem;line-height:1.25;color:var(--cobalt)}
-.pcard h3 a{text-decoration:none}
-.pcard h3 a::after{content:"";position:absolute;inset:0;border-radius:var(--r)}
-.pcard h3 a:focus-visible{outline:none}
-.pcard:has(h3 a:focus-visible){outline:3px solid var(--pink);outline-offset:3px}
-.pcard h3 .tbd{vertical-align:middle;font-family:var(--text)}
+.pcard :is(h2,h3){font-family:var(--head);font-weight:800;font-size:1.375rem;line-height:1.25;color:var(--cobalt)}
+.pcard :is(h2,h3) a{text-decoration:none}
+.pcard :is(h2,h3) a::after{content:"";position:absolute;inset:0;border-radius:var(--r)}
+.pcard :is(h2,h3) a:focus-visible{outline:none}
+.pcard:has(:is(h2,h3) a:focus-visible){outline:3px solid var(--pink);outline-offset:3px}
+.pcard :is(h2,h3) .tbd{vertical-align:middle;font-family:var(--text)}
+.pc-closed{justify-self:start;background:var(--ink);color:var(--paper);font-size:.8125rem;font-weight:600;border-radius:999px;padding:2px 12px}
 .pc-spec{display:grid;gap:6px;font-size:.9375rem}
 .pc-spec dt{font-size:.8125rem;font-weight:700;color:var(--muted)}
 
@@ -196,7 +197,7 @@ summary::-webkit-details-marker{display:none}
 .ask label{display:grid;gap:6px;font-weight:600}
 .ask input:not([type="checkbox"]),.ask select,.ask textarea{border:2px solid var(--cobalt);border-radius:14px;background:var(--paper);padding:10px 14px;font-size:1rem;min-height:48px;width:100%}
 .ask input:focus,.ask select:focus,.ask textarea:focus{outline:3px solid var(--sun);outline-offset:0;border-color:var(--pink)}
-.ask .consent{grid-template-columns:24px 1fr;align-items:start;gap:10px;font-weight:400}
+.ask .consent{grid-template-columns:24px 1fr;align-items:start;gap:10px;font-weight:400;min-height:44px}
 .ask .consent input{width:22px;height:22px;margin-top:3px;accent-color:var(--pink)}
 .ask .btn{justify-self:start}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -204,6 +205,9 @@ summary::-webkit-details-marker{display:none}
 .status.bad{color:#B71466}
 .privacy{margin-top:16px;font-size:.9375rem}
 .privacy summary{padding-left:0;font-weight:600;justify-content:flex-start}
+/* 펼치는 줄로 보이게 — 자주 묻는 질문과 같은 + 표시(작게), 열리면 돌아감 */
+.privacy summary::after{content:"+";flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--pink);color:#fff;display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.0625rem;line-height:1;transition:transform .2s}
+.privacy[open] summary::after{transform:rotate(45deg)}
 
 /* 바닥글 — 사이트맵 두 묶음 + 언어 + 회사 */
 .foot{background:var(--cobalt);color:#fff;padding:36px 20px 44px;font-size:.9375rem}
@@ -222,6 +226,7 @@ summary::-webkit-details-marker{display:none}
 .chooser{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--mist)}
 .chooser main{width:min(100%,440px);display:grid;gap:26px;justify-items:center}
 .biglogo{width:min(86%,340px);animation:drop .7s cubic-bezier(.2,1.4,.4,1) both}
+.biglogo img{width:100%}
 .choose{list-style:none;padding:0;display:grid;gap:14px;width:100%}
 .choose a{display:flex;align-items:center;justify-content:center;min-height:60px;border:var(--line);border-radius:999px;background:var(--paper);box-shadow:var(--drop);text-decoration:none;font-family:var(--head);font-weight:600;font-size:1.25rem;transition:transform .12s,box-shadow .12s}
 .choose a:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--cobalt)}

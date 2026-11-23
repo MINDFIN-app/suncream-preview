@@ -3,6 +3,14 @@
 (function () {
   var root = document.documentElement;
 
+  // 한 장짜리 시절 주소의 조각(ko/#order 등)으로 홈에 들어오면 새 쪽으로 넘긴다 (2026-11-23 여러 쪽으로 바꿈)
+  var OLD = { product: "products/", seller: "about/", shipping: "shipping/", order: "order/", faq: "faq/", contact: "contact/#form" };
+  var frag = location.hash.slice(1);
+  if (document.body.dataset.page === "home" && Object.prototype.hasOwnProperty.call(OLD, frag)) {
+    location.replace(OLD[frag]);
+    return;
+  }
+
   // 홈 아래쪽 카드가 화면에 들어올 때 톡 튀어나오는 모션. 지원하지 않는 브라우저에서는 처음부터 보인다
   var pops = document.querySelectorAll(".pop");
   if ("IntersectionObserver" in window) {
