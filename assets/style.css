@@ -12,7 +12,9 @@
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth;scroll-padding-top:84px;overflow-x:clip}
 html.locked{overflow:hidden}
-body{font-family:var(--text);background:var(--paper);color:var(--ink);line-height:1.65;font-size:1.0625rem;overflow-x:hidden}
+/* 가로 넘침은 clip 으로 자른다 — hidden 은 body 를 스크롤 상자로 만들어 머리글(sticky)이 붙지 않는다(2026-11-23 고침).
+   clip 을 모르는 옛 브라우저는 hidden 을 쓰고, 그때는 html 의 clip 도 무시돼 body 값이 화면 전체로 가므로 역시 붙는다 */
+body{font-family:var(--text);background:var(--paper);color:var(--ink);line-height:1.65;font-size:1.0625rem;overflow-x:hidden;overflow-x:clip}
 html[lang="ko"] body{word-break:keep-all}
 a,button,input,select,textarea{font:inherit;color:inherit}
 img{max-width:100%;height:auto;display:block}

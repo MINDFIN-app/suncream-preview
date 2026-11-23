@@ -25,14 +25,15 @@
   }
 
   // 넓은 화면의 주 메뉴가 로고·주문 문의 단추 사이 한 줄에 안 들어가면(베트남어 등 긴 말)
-  // 먼저 간격을 줄이고(.tight), 그래도 안 되면 메뉴를 로고 아래 줄로 내린다(.stack). 글꼴이 늦게 와도·창 크기가 바뀌어도 다시 잰다
+  // 먼저 간격을 줄이고(.tight), 그래도 안 되면 메뉴를 로고 아래 줄로 내린다(.stack). 글꼴이 늦게 와도·창 크기가 바뀌어도 다시 잰다.
+  // 머리글은 스크롤해도 위에 붙는다(sticky) — 넓은 화면의 언어 줄은 먼저 올라가고 로고·메뉴 줄만 남는다
   var top = document.querySelector(".top");
   var mlist = top && top.querySelector(".menu ul");
+  var langRow = top && top.querySelector(".top-langs");
   if (mlist) {
     var over = function () { return mlist.scrollWidth > mlist.clientWidth + 1; };
-    var fitMenu = function () {
+    var shape = function () {
       top.classList.remove("tight", "stack");
-      root.style.scrollPaddingTop = "";
       if (!mlist.offsetWidth) return;                 // 좁은 화면 — 메뉴는 서랍에
       if (!over()) return;
       top.classList.add("tight");
@@ -40,7 +41,12 @@
       top.classList.remove("tight");
       top.classList.add("stack");
       if (over()) top.classList.add("tight");
-      root.style.scrollPaddingTop = (top.offsetHeight + 16) + "px";   // 머리글이 높아진 만큼 쪽 안 이동 위치도
+    };
+    var fitMenu = function () {
+      shape();
+      var lh = langRow ? langRow.offsetHeight : 0;   // 좁은 화면에서는 0(숨김)
+      top.style.top = lh ? -lh + "px" : "";
+      root.style.scrollPaddingTop = (top.offsetHeight - lh + 16) + "px";   // 쪽 안 이동(#form 등)이 붙은 머리글에 가리지 않게
     };
     var queued = false;
     var refit = function () {
