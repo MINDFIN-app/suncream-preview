@@ -24,6 +24,38 @@
     pops.forEach(function (el) { el.classList.add("in"); });
   }
 
+  // 넓은 화면의 주 메뉴가 로고·주문 문의 단추 사이 한 줄에 안 들어가면(베트남어 등 긴 말)
+  // 먼저 간격을 줄이고(.tight), 그래도 안 되면 메뉴를 로고 아래 줄로 내린다(.stack). 글꼴이 늦게 와도·창 크기가 바뀌어도 다시 잰다
+  var top = document.querySelector(".top");
+  var mlist = top && top.querySelector(".menu ul");
+  if (mlist) {
+    var over = function () { return mlist.scrollWidth > mlist.clientWidth + 1; };
+    var fitMenu = function () {
+      top.classList.remove("tight", "stack");
+      root.style.scrollPaddingTop = "";
+      if (!mlist.offsetWidth) return;                 // 좁은 화면 — 메뉴는 서랍에
+      if (!over()) return;
+      top.classList.add("tight");
+      if (!over()) return;
+      top.classList.remove("tight");
+      top.classList.add("stack");
+      if (over()) top.classList.add("tight");
+      root.style.scrollPaddingTop = (top.offsetHeight + 16) + "px";   // 머리글이 높아진 만큼 쪽 안 이동 위치도
+    };
+    var queued = false;
+    var refit = function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; fitMenu(); });
+    };
+    fitMenu();
+    window.addEventListener("resize", refit);
+    if (document.fonts) {
+      if (document.fonts.ready) document.fonts.ready.then(refit);
+      if (document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", refit);
+    }
+  }
+
   // 서랍 메뉴 (860px 아래). 열면 첫 링크로 초점, Tab 은 서랍 안에서만, Esc·닫기·바깥 누름으로 닫고 초점은 메뉴 단추로
   var menuBtn = document.querySelector(".menu-btn");
   var drawer = document.getElementById("drawer");
