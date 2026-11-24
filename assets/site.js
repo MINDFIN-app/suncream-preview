@@ -72,13 +72,33 @@
     };
     fitMenu();
     window.addEventListener("resize", refit);
+    // 창 크기 말고도 자리가 바뀌는 때(브라우저 글자 키움, 세로 스크롤 막대가 생김, 화면 나누기)까지 — 머리글 줄의 크기를 지켜본다
+    if ("ResizeObserver" in window) new ResizeObserver(refit).observe(top.querySelector(".top-main"));
     if (document.fonts) {
       if (document.fonts.ready) document.fonts.ready.then(refit);
       if (document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", refit);
     }
   }
 
-  // 서랍 메뉴 (860px 아래). 열면 첫 링크로 초점, Tab 은 서랍 안에서만, Esc·닫기·바깥 누름으로 닫고 초점은 메뉴 단추로
+  // 흐르는 띠(홈) — 아주 넓은 화면에서도 빈틈이 없게 문구를 화면 폭만큼 되풀이하고, 흐르는 빠르기는 그대로 둔다
+  var run = document.querySelector(".run");
+  if (run) {
+    var unit = run.innerHTML, copies = 1;
+    var fillRun = function () {
+      var half = run.offsetWidth / copies / 2;
+      if (!half) return;
+      var need = Math.min(12, Math.max(1, Math.ceil((window.innerWidth + 64) / half)));
+      if (need <= copies) return;                    // 늘리기만 한다 — 줄어든 화면에서는 남아도 보이지 않음
+      copies = need;
+      run.innerHTML = new Array(need + 1).join(unit);
+      run.style.animationDuration = 34 * need + "s";
+    };
+    fillRun();
+    window.addEventListener("resize", fillRun);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fillRun);
+  }
+
+  // 서랍 메뉴 (머리글이 좁거나 낮은 화면). 열면 첫 링크로 초점, Tab 은 서랍 안에서만, Esc·닫기·바깥 누름으로 닫고 초점은 메뉴 단추로
   var menuBtn = document.querySelector(".menu-btn");
   var drawer = document.getElementById("drawer");
   if (menuBtn && drawer) {
@@ -127,9 +147,9 @@
       if (e.shiftKey && (at === first || !panel.contains(at))) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && (at === last || !panel.contains(at))) { e.preventDefault(); first.focus(); }
     });
-    // 화면이 넓어지면(가로로 돌림 등) 서랍을 닫는다 — 넓은 화면에는 머리글 메뉴가 있다
+    // 화면이 넓어지면(창을 늘림·태블릿을 돌림 등) 서랍을 닫는다 — 넓은 화면에는 머리글 메뉴가 있다. 조건은 style.css 끝의 '넓은 머리글'과 같게
     if (window.matchMedia) {
-      var wide = window.matchMedia("(min-width: 860px)");
+      var wide = window.matchMedia("(min-width: 53.75em) and (min-height: 31.25em)");
       var onWide = function () { if (wide.matches) closeDrawer(false); };
       if (wide.addEventListener) wide.addEventListener("change", onWide); else if (wide.addListener) wide.addListener(onWide);
     }
