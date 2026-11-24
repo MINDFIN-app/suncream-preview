@@ -24,6 +24,22 @@
     pops.forEach(function (el) { el.classList.add("in"); });
   }
 
+  // 구역이 화면 안쪽까지 들어오면 .seen(제목 앞 노란 점·단계 번호가 한 번 톡), 조금이라도 보이는 동안 .on(배경 움직임 — 밖에서는 멈춤)
+  var zones = document.querySelectorAll(".block, .amb, .foot");
+  if ("IntersectionObserver" in window) {
+    var onIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.target.classList.toggle("on", e.isIntersecting); });
+    });
+    var seenIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("seen"); seenIo.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -6% 0px" });
+    zones.forEach(function (el) { onIo.observe(el); seenIo.observe(el); });
+  } else {
+    zones.forEach(function (el) { el.classList.add("on"); el.classList.add("seen"); });
+  }
+
   // 넓은 화면의 주 메뉴가 로고·주문 문의 단추 사이 한 줄에 안 들어가면(베트남어 등 긴 말)
   // 먼저 간격을 줄이고(.tight), 그래도 안 되면 메뉴를 로고 아래 줄로 내린다(.stack). 글꼴이 늦게 와도·창 크기가 바뀌어도 다시 잰다.
   // 머리글은 스크롤해도 위에 붙는다(sticky) — 넓은 화면의 언어 줄은 먼저 올라가고 로고·메뉴 줄만 남는다

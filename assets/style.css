@@ -74,8 +74,13 @@ main:focus{outline:none}
 .drawer .btn{width:calc(100% - 4px);margin-top:4px}
 
 /* 쪽 머리 — 빵부스러기 + 제목 (홈 말고 모든 쪽) */
-.pagehead{background:var(--mist);border-bottom:var(--line)}
+.pagehead{background:var(--mist);border-bottom:var(--line);position:relative;overflow:hidden;isolation:isolate}
 .pagehead-in{max-width:var(--wide);margin:0 auto;padding:4px 20px 26px}
+/* 쪽 머리 장식 — 홈 첫 화면과 같은 해가 오른쪽 위 모서리에서 천천히 돈다(모든 쪽 공통 표시) + 반짝이 둘. 글자 뒤에 깔림 */
+.ph-deco{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.ph-sun{position:absolute;right:-64px;top:-78px;width:168px;height:168px;fill:var(--sun);stroke:var(--sun)}
+.pagehead .spark.p1{right:112px;top:14px;width:16px;height:16px}
+.pagehead .spark.p2{right:72px;top:86px;width:12px;height:12px;animation-delay:1.3s}
 .crumbs ol{list-style:none;padding:0;display:flex;flex-wrap:wrap;align-items:center;font-size:.875rem;font-weight:600;color:var(--muted)}
 .crumbs li{display:inline-flex;align-items:center;min-height:44px}
 .crumbs li+li::before{content:"›";padding:0 8px;color:var(--cobalt);font-weight:700}
@@ -105,7 +110,6 @@ h1 .tbd{vertical-align:middle;font-family:var(--text)}
 
 .stage{position:relative;height:300px;max-width:420px;width:100%;justify-self:center}
 .sun{position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;fill:var(--sun);stroke:var(--sun)}
-.sun .rays{transform-origin:100px 100px;animation:spin 36s linear infinite}
 .photo{position:absolute;left:50%;top:50%;width:150px;height:196px;margin:-98px 0 0 -75px;background:var(--paper);border:var(--line);border-radius:var(--r);box-shadow:var(--drop);display:grid;place-items:center;text-align:center;font-size:.875rem;padding:10px;transform:rotate(5deg);overflow:hidden}
 .photo img{width:100%;height:100%;object-fit:contain}
 .spark{position:absolute;width:22px;height:22px;background:
@@ -124,7 +128,9 @@ h1 .tbd{vertical-align:middle;font-family:var(--text)}
 
 /* 구역 */
 .block{max-width:var(--wide);margin:0 auto;padding:40px 20px 0}
-.block.tint{max-width:none;background:var(--mist);margin-top:48px;padding:44px 20px 52px}
+.block.tint{max-width:none;background:var(--mist);margin-top:48px;padding:44px 20px 52px;position:relative;overflow:clip;isolation:isolate}
+/* 옅은 물방울 무늬가 비스듬히 천천히 흐른다(무늬 한 칸 28px 만큼 움직여 이음매 없이 되풀이) — 연한 바탕 구역·언어 고르기 화면 */
+.block.tint::before,.chooser::before{content:"";position:absolute;inset:-28px;z-index:-1;pointer-events:none;background:radial-gradient(circle,#D3DBF8 2.5px,transparent 3px) 0 0/28px 28px;animation:drift 22s linear infinite}
 .block.tint>*{max-width:calc(var(--wide) - 40px);margin-inline:auto}
 main>.block:last-child:not(.tint){padding-bottom:56px}
 .pagehead+.block{margin-top:0;padding-top:28px}
@@ -183,7 +189,7 @@ main>.block:last-child:not(.tint){padding-bottom:56px}
 
 .steps{margin-top:20px;padding:0;list-style:none;counter-reset:step;display:grid;gap:14px}
 .steps li{counter-increment:step;position:relative;background:var(--paper);border:var(--line);border-radius:var(--r);padding:16px 18px 16px 70px;min-height:64px}
-.steps li::before{content:counter(step);position:absolute;left:14px;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:var(--sun);border:var(--line);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.25rem;color:var(--cobalt);line-height:1}
+.steps li::before{content:counter(step);position:absolute;left:14px;top:50%;translate:0 -50%;width:42px;height:42px;border-radius:50%;background:var(--sun);border:var(--line);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.25rem;color:var(--cobalt);line-height:1}
 
 .faq{margin-top:4px;display:grid;gap:12px}
 .faq details{background:var(--paper);border:var(--line);border-radius:var(--r);overflow:hidden}
@@ -212,7 +218,13 @@ summary::-webkit-details-marker{display:none}
 .privacy[open] summary::after{transform:rotate(45deg)}
 
 /* 바닥글 — 사이트맵 두 묶음 + 언어 + 회사 */
-.foot{background:var(--cobalt);color:#fff;padding:36px 20px 44px;font-size:.9375rem}
+.foot{background:var(--cobalt);color:#fff;padding:36px 20px 44px;font-size:.9375rem;position:relative;overflow:clip;isolation:isolate}
+/* 바닥글 반짝이 둘(노랑) — 위 여백(36px) 안에만 두어 글자와 겹치지 않게 */
+.foot::before,.foot::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:20px;height:20px;background:
+  linear-gradient(var(--sun),var(--sun)) center/100% 4px no-repeat,
+  linear-gradient(var(--sun),var(--sun)) center/4px 100% no-repeat;animation:twinkle 3.2s ease-in-out infinite}
+.foot::before{right:6%;top:9px}
+.foot::after{right:15%;top:17px;width:12px;height:12px;animation-delay:1.5s}
 .foot-in{max-width:var(--wide);margin:0 auto;display:grid;gap:24px}
 .foot-map{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .foot h2{font-family:var(--head);font-weight:800;font-size:1.125rem;line-height:1.3;color:var(--sun)}
@@ -225,7 +237,8 @@ summary::-webkit-details-marker{display:none}
 .foot .tbd{background:#fff}
 
 /* 언어 고르기 화면 · 404 */
-.chooser{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--mist)}
+.chooser{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--mist);isolation:isolate}
+.chooser::before{position:fixed}
 .chooser main{width:min(100%,440px);display:grid;gap:26px;justify-items:center}
 .biglogo{width:min(86%,340px);animation:drop .7s cubic-bezier(.2,1.4,.4,1) both}
 .biglogo img{width:100%}
@@ -238,8 +251,15 @@ summary::-webkit-details-marker{display:none}
 .nf-code{font-family:var(--head);font-weight:800;font-size:3.5rem;line-height:1;color:var(--pink)}
 .nf p:not(.nf-code){font-weight:600}
 
-/* 모션 — 홈 첫 화면은 한 번에 차례로, 홈 아래 카드는 화면에 들어올 때 톡. 다른 쪽은 조용히 */
-@keyframes spin{to{transform:rotate(360deg)}}
+/* 모션 (2026-11-23 사이트 전체로 넓힘) — 홈 첫 화면은 한 번에 차례로, 카드는 화면에 들어올 때 톡.
+   배경: 쪽 머리의 해가 돌고·연한 구역 물방울 무늬가 흐르고·반짝이. 아이콘: 제목 앞 노란 점·단계 번호·서랍 메뉴 점이 톡.
+   움직이는 것은 transform·opacity 뿐(휴대폰에서 매 장면 다시 그리지 않음), 스크롤 위치에 묶지 않는다.
+   화면 밖 구역의 되풀이 움직임은 멈춘다(site.js 가 .on). 움직임 줄이기 설정이면 모두 끈다 */
+@keyframes turn{to{rotate:1turn}}
+@keyframes drift{to{transform:translate(28px,28px)}}
+@keyframes dotpop{0%{scale:0}60%{scale:1.25}100%{scale:1}}
+@keyframes sunin{from{opacity:0;scale:.5}to{opacity:1;scale:1}}
+@keyframes nudge{0%,100%{translate:-4px 0}50%{translate:1px 0}}
 @keyframes slide{to{transform:translateX(-50%)}}
 @keyframes twinkle{0%,100%{transform:scale(.6) rotate(0);opacity:.5}50%{transform:scale(1.15) rotate(45deg);opacity:1}}
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
@@ -253,7 +273,32 @@ summary::-webkit-details-marker{display:none}
 .hero .who{animation:rise .5s .28s both}
 .hero .how{animation:rise .5s .36s both}
 .hero .acts{animation:rise .5s .46s both}
-.hero .sun{animation:rise .6s .2s both, bob 5s 1s ease-in-out infinite}
+.hero .sun{animation:rise .6s .2s both, bob 5s 1s ease-in-out infinite, turn 36s linear infinite}
+.route i{animation:nudge 1.8s 1s ease-in-out infinite}
+/* 쪽 머리 — 해가 커지며 나타난 뒤 천천히 돌고, 제목 앞 노란 점이 톡 */
+.ph-sun{animation:sunin .7s .1s cubic-bezier(.2,1.3,.4,1) both, turn 48s linear infinite}
+.pagehead h1::before{animation:dotpop .6s .25s cubic-bezier(.2,1.6,.4,1) both}
+.pd-photo{animation:bob 6s ease-in-out infinite}
+/* 구역 제목 앞 노란 점·단계 번호 — 구역이 화면에 들어오면(site.js .seen) 한 번 톡. 스크립트가 없으면 처음부터 보임 */
+.js .block h2::before{animation:dotpop .6s .05s cubic-bezier(.2,1.6,.4,1) both paused}
+.js .block .steps li::before{animation:dotpop .55s .2s cubic-bezier(.2,1.6,.4,1) both paused}
+.js .block .steps li:nth-child(2)::before{animation-delay:.32s}
+.js .block .steps li:nth-child(3)::before{animation-delay:.44s}
+.js .block .steps li:nth-child(4)::before{animation-delay:.56s}
+.js .block.seen h2::before,.js .block.seen .steps li::before{animation-play-state:running}
+/* 서랍 메뉴를 열 때마다 메뉴 앞 동그라미가 차례로 톡 */
+.drawer:not([hidden]) .d-menu li a::before{animation:dotpop .45s .12s cubic-bezier(.2,1.6,.4,1) both}
+.drawer:not([hidden]) .d-menu li:nth-child(2) a::before{animation-delay:.17s}
+.drawer:not([hidden]) .d-menu li:nth-child(3) a::before{animation-delay:.22s}
+.drawer:not([hidden]) .d-menu li:nth-child(4) a::before{animation-delay:.27s}
+.drawer:not([hidden]) .d-menu li:nth-child(5) a::before{animation-delay:.32s}
+/* 화면 밖 구역의 되풀이 움직임만 멈춘다 — 들어오면 이어서. 한 번만 움직이는 아이콘(점·번호)은 넣지 않는다(도중에 멈추면 그 크기로 남음) */
+.js .amb:not(.on) :is(.sun,.ph-sun,.spark,.run),
+.js .amb:not(.on) .route i,
+.js .block:not(.on) .pd-photo,
+.js .block.tint:not(.on)::before,
+.js .foot:not(.on)::before,
+.js .foot:not(.on)::after{animation-play-state:paused}
 .hero .photo{animation:sticker .6s .5s cubic-bezier(.2,1.5,.4,1) both}
 .js .pop{opacity:0;transform:translateY(22px) scale(.97);transition:opacity .45s, transform .5s cubic-bezier(.2,1.3,.4,1)}
 .js .pop.in{opacity:1;transform:none}
@@ -270,6 +315,13 @@ summary::-webkit-details-marker{display:none}
   .pcard,.lcard{transition:transform .12s,box-shadow .12s}
   .js .pcard.pop.in:hover,.js .lcard.pop.in:hover{transform:translate(-2px,-2px)}
   .ticker:hover .run{animation-play-state:paused}
+  /* 아이콘이 마우스에 반응 — 안내 카드 화살표가 앞으로, 펼침 + 표시가 커짐 */
+  .lcard::after{transition:scale .2s cubic-bezier(.2,1.6,.4,1)}
+  .lcard::before{transition:translate .2s}
+  .lcard:hover::after{scale:1.14}
+  .lcard:hover::before{translate:3px 0}
+  .faq summary::after,.privacy summary::after{transition:transform .2s,scale .2s cubic-bezier(.2,1.6,.4,1)}
+  summary:hover::after{scale:1.15}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -313,6 +365,9 @@ summary::-webkit-details-marker{display:none}
   .lgrid{grid-template-columns:repeat(3,1fr)}
   .pdetail{grid-template-columns:300px 1fr;align-items:start;column-gap:44px}
   .pd-photo{aspect-ratio:3/4;transform:rotate(-2deg)}
+  .ph-sun{width:250px;height:250px;right:max(-96px,calc((100% - var(--wide)) / 2 - 120px));top:-112px}
+  .pagehead .spark.p1{right:calc(max(-96px,calc((100% - var(--wide)) / 2 - 120px)) + 250px);top:20px;width:18px;height:18px}
+  .pagehead .spark.p2{right:calc(max(-96px,calc((100% - var(--wide)) / 2 - 120px)) + 215px);top:104px;width:14px;height:14px}
   .ask{padding:26px 24px}
   .foot-map{grid-template-columns:repeat(2,minmax(0,260px))}
 }
